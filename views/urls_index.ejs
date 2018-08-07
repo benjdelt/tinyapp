@@ -5,6 +5,7 @@
   <title>TinyApp</title>
 </head>
 <body>
+  <% include ./partials/_header %>
   <ul>
   <% for(let url in urls) { %>
     <li><%= urls[url] %> -> <%= url %></li>
