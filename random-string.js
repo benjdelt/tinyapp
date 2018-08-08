@@ -46,5 +46,5 @@ function generateRandomString() {
 
 // Only export the function
 
-module.export = generateRandomString;
+module.exports = generateRandomString;
 
