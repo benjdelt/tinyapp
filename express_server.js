@@ -36,6 +36,15 @@ const urlDatabase = {
 
 // Routes
 
+const urlsRouter = require('./routes/urls');
+app.use('/urls', urlsRouter);
+
+// Home
+
+app.get("/", (req, res) => {
+  res.end("Hello!");
+});
+
 // Login user
 
 app.post('/login', (req, res) => {
@@ -51,50 +60,6 @@ app.post("/logout", (req, res) => {
   res.redirect(303, '/urls');
 });
 
-// Home
-
-app.get("/", (req, res) => {
-  res.end("Hello!");
-});
-
-// New form
-
-app.get("/urls/new", (req, res) => {
-  let templateVars = {username: req.cookies['username']};
-  res.render("urls_new", templateVars);
-});
-
-// Create new shortened URL
-
-app.post("/urls", (req, res) => {
-  const newEntry = generateRandomString();
-  urlDatabase[newEntry] = req.body.longURL;
-  res.redirect(303, `urls/${newEntry}`);
-});
-
-// Render all urls
-
-app.get("/urls", (req, res) => {
-  let templateVars = {urls: urlDatabase,
-                      username:req.cookies["username"]
-                     };
-  res.render("urls_index", templateVars);
-});
-
-app.get("/urls.json", (req, res) => {
-  res.json(urlDatabase);
-});
-
-// Render a specific url
-
-app.get("/urls/:id", (req, res) => {
-  let templateVars = {shortURL: req.params.id,
-                      urls: urlDatabase,
-                      username: req.cookies["username"]
-                      };
-  res.render("urls_show", templateVars);
-});
-
 // Redirect from short URL to actual URL
 
 app.get("/u/:shortURL", (req, res) => {
@@ -102,19 +67,6 @@ app.get("/u/:shortURL", (req, res) => {
   res.redirect(301, longURL)
 });
 
-// Update URL
-
-app.post("/urls/:id/update", (req, res) => {
-  urlDatabase[req.params.id] = req.body.shortURL;
-  res.redirect(303, '/urls');
-});
-
-// Delete URL
-
-app.post("/urls/:id/delete", (req, res) => {
-  delete urlDatabase[req.params.id];
-  res.redirect(303, '/urls');
-});
 
 // Server starts listening on default port
 
