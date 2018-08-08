@@ -1,5 +1,12 @@
+// Require Express and set router
+
 const express = require('express');
 const usersRouter = new express.Router();
+
+// Require generateRandomString function
+
+const generateRandomString = require('../random-string');
+
 
 // Simulate Database
 
@@ -16,15 +23,34 @@ const users = {
   }
 };
 
+function createUser(email, password) {
+  const randomID = generateRandomString();
+  users[randomID] = {
+                    id: randomID,
+                    email: email,
+                    password:password
+                   };
+  return randomID;
+}
+
 
 // Routes
 
 usersRouter
 
-  // Create user
+  // Create user page
 
   .get('/register', (req, res) => {
     res.render('register');
+  })
+
+  // Create user
+
+  .post('/register', (req, res) => {
+    const userID = createUser(req.body.email, req.body.password);
+    console.log(users);
+    res.cookie('user_id', userID);
+    res.redirect(303, '/urls');
   })
 
   // Login user
