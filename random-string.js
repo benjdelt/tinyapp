@@ -1,17 +1,29 @@
+// Generate random in, min included, max included (From MDN)
+
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min)) + min;
 }
+
+// Generate a random uppercase letter by converting a number
+// to its ASCII value
+
 function generateRandomUpper() {
   const ascii = getRandomInt(65, 91);
   return String.fromCharCode(ascii);
 }
 
+// Generate a random lowercase letter by converting a number
+// to its ASCII value
+
 function generateRandomLower() {
   const ascii = getRandomInt(97, 122);
   return String.fromCharCode(ascii);
 }
+
+// Generate a random 6 character string composed of number,
+// uppercase and lowercase letters
 
 function generateRandomString() {
   let result = ''
@@ -32,6 +44,7 @@ function generateRandomString() {
   return result;
 }
 
+// Only export the function
 
-console.log(generateRandomString());
+module.export = generateRandomString;
 
