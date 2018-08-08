@@ -41,11 +41,10 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
-  console.log(req.body);
   const newEntry = generateRandomString();
   urlDatabase[newEntry] = req.body.longURL;
   console.log(urlDatabase);
-  res.send("Ok");
+  res.redirect(303, `urls/${newEntry}`);
 });
 
 // Render all urls
