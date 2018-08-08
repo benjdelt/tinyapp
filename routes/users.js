@@ -33,6 +33,15 @@ function createUser(email, password) {
   return randomID;
 }
 
+function getUserByEmail(email) {
+  for (user in users) {
+    if (users[user].email === email) {
+      return users[user].id;
+    }
+  }
+  return false;
+}
+
 
 // Routes
 
@@ -47,10 +56,15 @@ usersRouter
   // Create user
 
   .post('/register', (req, res) => {
-    const userID = createUser(req.body.email, req.body.password);
-    console.log(users);
-    res.cookie('user_id', userID);
-    res.redirect(303, '/urls');
+    if (!req.body.email || !req.body.password) {
+      res.sendStatus(400); // Why not use 403?
+    } else if (getUserByEmail(req.body.email)) {
+      res.sendStatus(400); // Why not use 403?
+    } else {
+      const userID = createUser(req.body.email, req.body.password);
+      res.cookie('user_id', userID);
+      res.redirect(303, '/urls');
+    }
   })
 
   // Login user
