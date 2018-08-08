@@ -44,6 +44,13 @@ app.post('/login', (req, res) => {
 });
 
 
+// Logout user
+
+app.post("/logout", (req, res) => {
+  res.clearCookie('username');
+  res.redirect(303, '/urls');
+});
+
 // Home
 
 app.get("/", (req, res) => {
