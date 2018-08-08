@@ -65,6 +65,13 @@ app.get("/urls/:id", (req, res) => {
   res.render("urls_show", templateVars);
 });
 
+// Redirect from short URL to actual URL
+
+app.get("/u/:shortURL", (req, res) => {
+  let longURL = urlDatabase[req.params.shortURL];
+  res.redirect(301, longURL)
+});
+
 // Server starts listening on default port
 
 app.listen(PORT, () => {
