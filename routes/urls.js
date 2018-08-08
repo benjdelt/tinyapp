@@ -8,6 +8,11 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
+
+// Require generateRandomString function
+
+const generateRandomString = require('../random-string');
+
 // Routes
 
 urlsRouter
@@ -21,7 +26,7 @@ urlsRouter
 
   // Create new shortened URL
 
-  .post("/urls", (req, res) => {
+  .post("/", (req, res) => {
     const newEntry = generateRandomString();
     urlDatabase[newEntry] = req.body.longURL;
     res.redirect(303, `urls/${newEntry}`);

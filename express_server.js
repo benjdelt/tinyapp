@@ -27,17 +27,18 @@ const PORT = 8080;
 
 app.set('view engine', 'ejs');
 
-// Simulate Database
-
-const urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
-};
-
 // Routes
+
+// URLs router
 
 const urlsRouter = require('./routes/urls');
 app.use('/urls', urlsRouter);
+
+// Users router
+
+const usersRouter = require('./routes/users')
+app.use('/', usersRouter);
+
 
 // Home
 
@@ -45,20 +46,6 @@ app.get("/", (req, res) => {
   res.end("Hello!");
 });
 
-// Login user
-
-app.post('/login', (req, res) => {
-  res.cookie('username', req.body.username);
-  res.redirect(303, '/urls');
-});
-
-
-// Logout user
-
-app.post("/logout", (req, res) => {
-  res.clearCookie('username');
-  res.redirect(303, '/urls');
-});
 
 // Redirect from short URL to actual URL
 
