@@ -1,4 +1,4 @@
-// Generate random in, min included, max included (From MDN)
+// Generate random in, min included, max excluded (From MDN)
 
 function getRandomInt(min, max) {
   min = Math.ceil(min);

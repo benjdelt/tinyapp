@@ -40,10 +40,11 @@ app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
 
+// Create new shortened URL
+
 app.post("/urls", (req, res) => {
   const newEntry = generateRandomString();
   urlDatabase[newEntry] = req.body.longURL;
-  console.log(urlDatabase);
   res.redirect(303, `urls/${newEntry}`);
 });
 
