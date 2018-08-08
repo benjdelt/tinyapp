@@ -73,6 +73,13 @@ app.get("/u/:shortURL", (req, res) => {
   res.redirect(301, longURL)
 });
 
+// Update URL
+
+app.post("/urls/:id/update", (req, res) => {
+  urlDatabase[req.params.id] = req.body.shortURL;
+  res.redirect(303, '/urls');
+});
+
 // Delete URL
 
 app.post("/urls/:id/delete", (req, res) => {
