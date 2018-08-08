@@ -7,11 +7,17 @@ const app = express();
 
 const generateRandomString = require('./random-string');
 
-// Requiring body-parser npm module to parse the data returned from the
+// Require body-parser npm module to parse the data returned from the
 // html form
 
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
+
+// Require and use cookie-parser
+
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
+
 
 // Set the default port
 
@@ -29,6 +35,16 @@ const urlDatabase = {
 };
 
 // Routes
+
+// Login user
+
+app.post('/login', (req, res) => {
+  res.cookie('usernane', req.body.username);
+  res.redirect(303, '/urls');
+});
+
+
+// Home
 
 app.get("/", (req, res) => {
   res.end("Hello!");
