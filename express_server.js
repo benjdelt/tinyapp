@@ -73,6 +73,13 @@ app.get("/u/:shortURL", (req, res) => {
   res.redirect(301, longURL)
 });
 
+// Delete URL
+
+app.post("/urls/:id/delete", (req, res) => {
+  delete urlDatabase[req.params.id];
+  res.redirect(303, '/urls');
+});
+
 // Server starts listening on default port
 
 app.listen(PORT, () => {
