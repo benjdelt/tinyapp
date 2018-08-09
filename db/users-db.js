@@ -15,6 +15,11 @@ const users = {
     id: "user3RandomID",
     email: "ben@ben.com",
     password: "123"
+  },
+  "user4RandomID": {
+    id: "user4RandomID",
+    email: "otherben@ben.com",
+    password: "abc"
   }
 };
 

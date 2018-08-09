@@ -14,16 +14,31 @@ const users = require('../db/users-db');
 const urlDatabase = require('../db/urls-db');
 
 
+function urlsForUser(id) {
+  const result = {};
+  for (url in urlDatabase) {
+    if (urlDatabase[url].userID === id) {
+      result[urlDatabase[url].short] = urlDatabase[url];
+    }
+  }
+  return result;
+}
+
+// console.log(urlsForUser("user3RandomID"));
+
 function addUrl(fullUrl, userID) {
   const newEntry = generateRandomString();
   urlDatabase[newEntry] = {
+                          short: newEntry,
                           longURL: fullUrl,
                           userID: userID
                           };
+  return newEntry;
 }
 
 function updateUrl(id, fullUrl, userID) {
   urlDatabase[id] = {
+                    short: id,
                     longURL: fullUrl,
                     userID: userID
                     };
@@ -51,19 +66,24 @@ urlsRouter
   // Create new shortened URL
 
   .post("/", (req, res) => {
-    addUrl(req.body.longURL, req.cookies['user_id']);
+    const newEntry = addUrl(req.body.longURL, req.cookies['user_id']);
     res.redirect(303, `urls/${newEntry}`);
   })
 
-  // Render all urls
+  // Render all urls for a user
 
   .get("/", (req, res) => {
     let templateVars = {
-                        urls: urlDatabase,
+                        urls: urlsForUser(req.cookies['user_id']),
                         user_id: users[req.cookies['user_id']]
                        };
-    res.render("urls_index", templateVars);
+    if (!users[req.cookies['user_id']]) {
+        res.redirect('/login');
+    } else {
+      res.render("urls_index", templateVars);
+    }
   })
+
 
   .get("/urls.json", (req, res) => {
     res.json(urlDatabase);
@@ -72,7 +92,6 @@ urlsRouter
   // Render a specific url
 
   .get("/:id", (req, res) => {
-
     if (!users[req.cookies['user_id']]) {
       res.redirect('/login');
     } else if (urlDatabase[req.params.id].userID !== req.cookies['user_id']){

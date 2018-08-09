@@ -6,15 +6,20 @@
 </head>
 <body>
   <% include ./partials/_header %>
-  <ul>
-  <% for(let url in urls) { %>
-    <li>
-      <form method="POST" action="/urls/<%= url %>/delete"><%= urls[url].longURL %> -> <%= url %>
-        <a href="/urls/<%= url %>">Edit</a>
-        <input type="submit" value="delete">
-      </form>
-    </li>
 
+  <% if (Object.keys(urls).length > 0) {%>
+    <ul>
+      <% for(let url in urls) { %>
+        <li>
+          <form method="POST" action="/urls/<%= urls[url].short %>/delete"><%= urls[url].longURL %> -> <%= urls[url].short %>
+            <a href="/urls/<%= urls[url].short %>">Edit</a>
+            <input type="submit" value="delete">
+          </form>
+        </li>
+      <%}%>
+    </ul>
+  <% } else { %>
+    <p>No url to show yet!</p>
   <%}%>
 </ul>
 <a href="/urls/new">Shorten URL</a>
