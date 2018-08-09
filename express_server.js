@@ -27,6 +27,11 @@ const PORT = 8080;
 
 app.set('view engine', 'ejs');
 
+// Require urlDatabase
+
+const urlDatabase = require("./db/urls-db");
+
+
 // Routes
 
 // URLs router
@@ -50,8 +55,9 @@ app.get("/", (req, res) => {
 // Redirect from short URL to actual URL
 
 app.get("/u/:shortURL", (req, res) => {
-  let longURL = urlDatabase[req.params.shortURL];
-  res.redirect(301, longURL)
+  let longURL = urlDatabase[req.params.shortURL].longURL;
+  // console.log("req.params.shortURL: ", req.params.shortURL);
+  res.redirect(longURL)
 });
 
 
