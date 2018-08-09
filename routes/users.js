@@ -57,7 +57,8 @@ usersRouter
       res.sendStatus(400); // Why not use 403?
     } else {
       const userID = createUser(req.body.email, req.body.password);
-      res.cookie('user_id', userID);
+      // res.cookie('user_id', userID);
+      req.session.user_id = userID;
       res.redirect(303, '/urls');
     }
   })
@@ -78,7 +79,8 @@ usersRouter
     } else if (!bcrypt.compareSync(req.body.password, users[registeredUser].password)) {
       res.sendStatus(403);
     } else {
-      res.cookie('user_id', registeredUser);
+      // res.cookie('user_id', registeredUser);
+      req.session.user_id = registeredUser;
       res.redirect(303, '/');
     }
   })
@@ -87,7 +89,8 @@ usersRouter
   // Logout user
 
   .post("/logout", (req, res) => {
-    res.clearCookie('user_id');
+    // res.clearCookie('user_id');
+    req.session = null;
     res.redirect(303, '/urls');
   });
 

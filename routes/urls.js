@@ -1,6 +1,7 @@
 const express = require('express');
 const urlsRouter = new express.Router();
 
+
 // Require generateRandomString function
 
 const generateRandomString = require('../random-string');
@@ -55,10 +56,10 @@ urlsRouter
   // New form
 
   .get("/new", (req, res) => {
-    if (!users[req.cookies['user_id']]) {
+    if (!users[req.session.user_id]) {
       res.redirect('/login');
     } else {
-      let templateVars = {user_id: users[req.cookies['user_id']]};
+      let templateVars = {user_id: users[req.session.user_id]};
       res.render("urls_new", templateVars);
     }
   })
@@ -66,7 +67,7 @@ urlsRouter
   // Create new shortened URL
 
   .post("/", (req, res) => {
-    const newEntry = addUrl(req.body.longURL, req.cookies['user_id']);
+    const newEntry = addUrl(req.body.longURL, req.session.user_id);
     res.redirect(303, `urls/${newEntry}`);
   })
 
@@ -74,10 +75,10 @@ urlsRouter
 
   .get("/", (req, res) => {
     let templateVars = {
-                        urls: urlsForUser(req.cookies['user_id']),
-                        user_id: users[req.cookies['user_id']]
+                        urls: urlsForUser(req.session.user_id),
+                        user_id: users[req.session.user_id]
                        };
-    if (!users[req.cookies['user_id']]) {
+    if (!users[req.session.user_id]) {
         res.redirect('/login');
     } else {
       res.render("urls_index", templateVars);
@@ -92,14 +93,14 @@ urlsRouter
   // Render a specific url
 
   .get("/:id", (req, res) => {
-    if (!users[req.cookies['user_id']]) {
+    if (!users[req.session.user_id]) {
       res.redirect('/login');
-    } else if (urlDatabase[req.params.id].userID !== req.cookies['user_id']){
+    } else if (urlDatabase[req.params.id].userID !== req.session.user_id){
       res.sendStatus(401);
     } else {
       let templateVars = {shortURL: req.params.id,
                           urls: urlDatabase[req.params.id].longURL,
-                          user_id: users[req.cookies['user_id']]
+                          user_id: users[req.session.user_id]
                           };
       res.render("urls_show", templateVars);
     }
@@ -108,14 +109,14 @@ urlsRouter
   // Update URL
 
   .post("/:id/update", (req, res) => {
-      updateUrl(req.params.id, req.body.shortURL, req.cookies['user_id']);
+      updateUrl(req.params.id, req.body.shortURL, req.session.user_id);
       res.redirect(303, '/urls');
   })
 
   // Delete URL
 
   .post("/:id/delete", (req, res) => {
-    if (urlDatabase[req.params.id].userID !== req.cookies['user_id']){
+    if (urlDatabase[req.params.id].userID !== req.session.user_id){
       res.sendStatus(401);
     } else {
       deleteUrl(req.params.id);

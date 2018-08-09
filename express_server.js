@@ -13,10 +13,14 @@ const generateRandomString = require('./random-string');
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 
-// Require and use cookie-parser
+// Require and use cookie session
 
-const cookieParser = require("cookie-parser");
-app.use(cookieParser());
+const cookieSession = require('cookie-session');
+
+app.use(cookieSession({
+  name: 'session',
+  keys: ['pepperoni', 'pizza']
+}));
 
 
 // Set the default port
