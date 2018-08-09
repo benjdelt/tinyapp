@@ -1,12 +1,14 @@
 const express = require('express');
 const urlsRouter = new express.Router();
 
-// Simulate Database
 
-const urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
-};
+// Require urlDatabase
+
+const urlDatabase = require('../db/urls-db');
+
+// Require users database
+
+const users = require('../db/users-db');
 
 
 // Require generateRandomString function
@@ -20,7 +22,8 @@ urlsRouter
   // New form
 
   .get("/new", (req, res) => {
-    let templateVars = {username: req.cookies['username']};
+    let templateVars = {user_id: users[req.cookies['user_id']]};
+    console.log(templateVars);
     res.render("urls_new", templateVars);
   })
 
@@ -36,7 +39,7 @@ urlsRouter
 
   .get("/", (req, res) => {
     let templateVars = {urls: urlDatabase,
-                        username:req.cookies["username"]
+                        user_id: users[req.cookies['user_id']]
                        };
     res.render("urls_index", templateVars);
   })
@@ -50,7 +53,7 @@ urlsRouter
   .get("/:id", (req, res) => {
     let templateVars = {shortURL: req.params.id,
                         urls: urlDatabase,
-                        username: req.cookies["username"]
+                        user_id: users[req.cookies['user_id']]
                         };
     res.render("urls_show", templateVars);
   })

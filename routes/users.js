@@ -7,21 +7,11 @@ const usersRouter = new express.Router();
 
 const generateRandomString = require('../random-string');
 
+// Require users databse
 
-// Simulate Database
+const users = require('../db/users-db');
 
-const users = {
-  "userRandomID": {
-    id: "userRandomID",
-    email: "user@example.com",
-    password: "purple-monkey-dinosaur"
-  },
- "user2RandomID": {
-    id: "user2RandomID",
-    email: "user2@example.com",
-    password: "dishwasher-funk"
-  }
-};
+
 
 function createUser(email, password) {
   const randomID = generateRandomString();

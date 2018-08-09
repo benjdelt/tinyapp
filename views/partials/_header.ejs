@@ -2,8 +2,8 @@
 <header>
   <h1>Tiny App</h1>
 </header>
-<% if(username) { %>
-  <h2>Hey, <%= username %></h2>
+<% if(user_id) { %>
+  <h2>Hey, <%= user_id.email %></h2>
   <form method="POST" action="/logout">
     <input type="submit" value="Logout">
   </form>
