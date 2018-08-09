@@ -57,6 +57,12 @@ usersRouter
     }
   })
 
+  // Login page
+
+  .get('/login', (req, res) => {
+    res.render('login');
+  })
+
   // Login user
 
   .post('/login', (req, res) => {
