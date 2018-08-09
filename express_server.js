@@ -35,6 +35,9 @@ app.set('view engine', 'ejs');
 
 const urlDatabase = require("./db/urls-db");
 
+// Require users database
+
+const users = require("./db/users-db");
 
 // Routes
 
@@ -52,7 +55,11 @@ app.use('/', usersRouter);
 // Home
 
 app.get("/", (req, res) => {
-  res.end("Hello!");
+  if (!users[req.session.user_id]) {
+    res.redirect('/login');
+  } else {
+    res.redirect('/urls');
+  }
 });
 
 
