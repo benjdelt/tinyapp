@@ -58,7 +58,8 @@ urlsRouter
   // Render all urls
 
   .get("/", (req, res) => {
-    let templateVars = {urls: urlDatabase,
+    let templateVars = {
+                        urls: urlDatabase,
                         user_id: users[req.cookies['user_id']]
                        };
     res.render("urls_index", templateVars);
@@ -71,14 +72,16 @@ urlsRouter
   // Render a specific url
 
   .get("/:id", (req, res) => {
+
     if (!users[req.cookies['user_id']]) {
       res.redirect('/login');
+    } else if (urlDatabase[req.params.id].userID !== req.cookies['user_id']){
+      res.sendStatus(401);
     } else {
       let templateVars = {shortURL: req.params.id,
                           urls: urlDatabase[req.params.id].longURL,
                           user_id: users[req.cookies['user_id']]
                           };
-      console.log(templateVars);
       res.render("urls_show", templateVars);
     }
   })
@@ -86,15 +89,19 @@ urlsRouter
   // Update URL
 
   .post("/:id/update", (req, res) => {
-    updateUrl(req.params.id, req.body.shortURL, req.cookies['user_id']);
-    res.redirect(303, '/urls');
+      updateUrl(req.params.id, req.body.shortURL, req.cookies['user_id']);
+      res.redirect(303, '/urls');
   })
 
   // Delete URL
 
   .post("/:id/delete", (req, res) => {
-    deleteUrl(req.params.id);
-    res.redirect(303, '/urls');
+    if (urlDatabase[req.params.id].userID !== req.cookies['user_id']){
+      res.sendStatus(401);
+    } else {
+      deleteUrl(req.params.id);
+      res.redirect(303, '/urls');
+    }
   });
 
 

@@ -58,5 +58,5 @@ app.get("/u/:shortURL", (req, res) => {
 // Server starts listening on default port
 
 app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}`);
+  console.log(`Tinyapp listening on port ${PORT}`);
 });
