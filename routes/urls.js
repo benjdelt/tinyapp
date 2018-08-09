@@ -1,19 +1,37 @@
 const express = require('express');
 const urlsRouter = new express.Router();
 
+// Require generateRandomString function
 
-// Require urlDatabase
-
-const urlDatabase = require('../db/urls-db');
+const generateRandomString = require('../random-string');
 
 // Require users database
 
 const users = require('../db/users-db');
 
+// Require urlDatabase
 
-// Require generateRandomString function
+const urlDatabase = require('../db/urls-db');
 
-const generateRandomString = require('../random-string');
+
+function addUrl(fullUrl, userID) {
+  const newEntry = generateRandomString();
+  urlDatabase[newEntry] = {
+                          longURL: fullUrl,
+                          userID: userID
+                          };
+}
+
+function updateUrl(id, fullUrl, userID) {
+  urlDatabase[id] = {
+                    longURL: fullUrl,
+                    userID: userID
+                    };
+}
+
+function deleteUrl(id) {
+  delete urlDatabase[id];
+}
 
 // Routes
 
@@ -22,16 +40,18 @@ urlsRouter
   // New form
 
   .get("/new", (req, res) => {
-    let templateVars = {user_id: users[req.cookies['user_id']]};
-    console.log(templateVars);
-    res.render("urls_new", templateVars);
+    if (!users[req.cookies['user_id']]) {
+      res.redirect('/login');
+    } else {
+      let templateVars = {user_id: users[req.cookies['user_id']]};
+      res.render("urls_new", templateVars);
+    }
   })
 
   // Create new shortened URL
 
   .post("/", (req, res) => {
-    const newEntry = generateRandomString();
-    urlDatabase[newEntry] = req.body.longURL;
+    addUrl(req.body.longURL, req.cookies['user_id']);
     res.redirect(303, `urls/${newEntry}`);
   })
 
@@ -51,24 +71,29 @@ urlsRouter
   // Render a specific url
 
   .get("/:id", (req, res) => {
-    let templateVars = {shortURL: req.params.id,
-                        urls: urlDatabase,
-                        user_id: users[req.cookies['user_id']]
-                        };
-    res.render("urls_show", templateVars);
+    if (!users[req.cookies['user_id']]) {
+      res.redirect('/login');
+    } else {
+      let templateVars = {shortURL: req.params.id,
+                          urls: urlDatabase[req.params.id].longURL,
+                          user_id: users[req.cookies['user_id']]
+                          };
+      console.log(templateVars);
+      res.render("urls_show", templateVars);
+    }
   })
 
   // Update URL
 
   .post("/:id/update", (req, res) => {
-    urlDatabase[req.params.id] = req.body.shortURL;
+    updateUrl(req.params.id, req.body.shortURL, req.cookies['user_id']);
     res.redirect(303, '/urls');
   })
 
   // Delete URL
 
   .post("/:id/delete", (req, res) => {
-    delete urlDatabase[req.params.id];
+    deleteUrl(req.params.id);
     res.redirect(303, '/urls');
   });
 
