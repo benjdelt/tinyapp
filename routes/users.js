@@ -70,7 +70,6 @@ usersRouter
     if (!registeredUser) {
       res.sendStatus(403);
     } else if (req.body.password !== users[registeredUser].password) {
-      console.log("wrong password", users[registeredUser].password);
       res.sendStatus(403);
     } else {
       res.cookie('user_id', registeredUser);
@@ -82,7 +81,7 @@ usersRouter
   // Logout user
 
   .post("/logout", (req, res) => {
-    res.clearCookie('username');
+    res.clearCookie('user_id');
     res.redirect(303, '/urls');
   });
 
