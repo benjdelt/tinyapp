@@ -66,8 +66,16 @@ usersRouter
   // Login user
 
   .post('/login', (req, res) => {
-    res.cookie('username', req.body.username);
-    res.redirect(303, '/urls');
+    const registeredUser = getUserByEmail(req.body.email);
+    if (!registeredUser) {
+      res.sendStatus(403);
+    } else if (req.body.password !== users[registeredUser].password) {
+      console.log("wrong password", users[registeredUser].password);
+      res.sendStatus(403);
+    } else {
+      res.cookie('user_id', registeredUser);
+      res.redirect(303, '/');
+    }
   })
 
 
