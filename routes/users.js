@@ -7,6 +7,10 @@ const usersRouter = new express.Router();
 
 const generateRandomString = require('../random-string');
 
+// Require bcrypt to hash passwords
+
+const bcrypt = require('bcrypt');
+
 // Require users databse
 
 const users = require('../db/users-db');
@@ -15,10 +19,11 @@ const users = require('../db/users-db');
 
 function createUser(email, password) {
   const randomID = generateRandomString();
+  const hashedPassword = bcrypt.hashSync(password, 10);
   users[randomID] = {
                     id: randomID,
                     email: email,
-                    password:password
+                    password: hashedPassword
                    };
   return randomID;
 }
@@ -69,7 +74,8 @@ usersRouter
     const registeredUser = getUserByEmail(req.body.email);
     if (!registeredUser) {
       res.sendStatus(403);
-    } else if (req.body.password !== users[registeredUser].password) {
+    // } else if (req.body.password !== users[registeredUser].password) {
+    } else if (!bcrypt.compareSync(req.body.password, users[registeredUser].password)) {
       res.sendStatus(403);
     } else {
       res.cookie('user_id', registeredUser);
