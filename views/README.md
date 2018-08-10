@@ -5,11 +5,16 @@ TinyApp is a full stack web application built with Node and Express that allows 
 ## Final Product
 
 ![Add new URL](https://github.com/benjdelt/tinyapp/blob/master/images/Screenshot%20from%202018-08-09%2020-58-47.png?raw=true)
-Add new URL
+
+*Add new URL*
+
 ![Update the URL](https://github.com/benjdelt/tinyapp/blob/master/images/Screenshot%20from%202018-08-09%2021-01-01.png?raw=true)
-Update the URL
+
+*Update the URL*
+
 ![Access the URL](https://github.com/benjdelt/tinyapp/blob/master/images/Screenshot%20from%202018-08-09%2021-01-07.png?raw=true)
-Access the URL
+
+*Access the URL*
 
 ## Dependencies
 
