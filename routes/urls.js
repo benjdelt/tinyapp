@@ -67,8 +67,12 @@ urlsRouter
   // Create new shortened URL
 
   .post("/", (req, res) => {
-    const newEntry = addUrl(req.body.longURL, req.session.user_id);
-    res.redirect(303, `urls/${newEntry}`);
+    if (!users[req.session.user_id]) {
+      render('denied');
+    } else {
+      const newEntry = addUrl(req.body.longURL, req.session.user_id);
+      res.redirect(303, `urls/${newEntry}`);
+    }
   })
 
   // Render all urls for a user
@@ -78,11 +82,11 @@ urlsRouter
                         urls: urlsForUser(req.session.user_id),
                         user_id: users[req.session.user_id]
                        };
-    if (!users[req.session.user_id]) {
-        res.redirect('/login');
-    } else {
+    // if (!users[req.session.user_id]) {
+    //     res.redirect('/login');
+    // } else {
       res.render("urls_index", templateVars);
-    }
+    // }
   })
 
 
@@ -94,9 +98,11 @@ urlsRouter
 
   .get("/:id", (req, res) => {
     if (!users[req.session.user_id]) {
-      res.redirect('/login');
+      res.render('denied');
+    } else if (!urlDatabase[req.params.id]) {
+      res.render('notfound');
     } else if (urlDatabase[req.params.id].userID !== req.session.user_id){
-      res.sendStatus(401);
+      res.render('denied');
     } else {
       let templateVars = {shortURL: req.params.id,
                           urls: urlDatabase[req.params.id].longURL,
@@ -109,15 +115,21 @@ urlsRouter
   // Update URL
 
   .post("/:id/update", (req, res) => {
+    if (!users[req.session.user_id]) {
+      render('denied');
+    } else {
       updateUrl(req.params.id, req.body.shortURL, req.session.user_id);
       res.redirect(303, '/urls');
+    }
   })
 
   // Delete URL
 
   .post("/:id/delete", (req, res) => {
-    if (urlDatabase[req.params.id].userID !== req.session.user_id){
-      res.sendStatus(401);
+    if (!users[req.session.user_id]) {
+      render('denied');
+    } else if (urlDatabase[req.params.id].userID !== req.session.user_id) {
+      res.render('denied');
     } else {
       deleteUrl(req.params.id);
       res.redirect(303, '/urls');

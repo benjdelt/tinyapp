@@ -55,6 +55,7 @@ app.use('/', usersRouter);
 // Home
 
 app.get("/", (req, res) => {
+  // let templateVars = {user_id: }
   if (!users[req.session.user_id]) {
     res.redirect('/login');
   } else {
@@ -66,9 +67,12 @@ app.get("/", (req, res) => {
 // Redirect from short URL to actual URL
 
 app.get("/u/:shortURL", (req, res) => {
-  let longURL = urlDatabase[req.params.shortURL].longURL;
-  // console.log("req.params.shortURL: ", req.params.shortURL);
-  res.redirect(longURL)
+  if (urlDatabase[req.params.shortURL]) {
+    let longURL = urlDatabase[req.params.shortURL].longURL;
+    res.redirect(longURL)
+  } else {
+    res.render('notfound');
+  }
 });
 
 

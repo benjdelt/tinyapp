@@ -45,16 +45,20 @@ usersRouter
   // Create user page
 
   .get('/register', (req, res) => {
-    res.render('register');
+    if (!users[req.session.user_id]) {
+      res.render('register');
+    } else {
+      res.redirect('/urls');
+    }
   })
 
   // Create user
 
   .post('/register', (req, res) => {
     if (!req.body.email || !req.body.password) {
-      res.sendStatus(400); // Why not use 403?
+      res.render('registerempty'); // Why not use 403?
     } else if (getUserByEmail(req.body.email)) {
-      res.sendStatus(400); // Why not use 403?
+      res.render('registertaken'); // Why not use 403?
     } else {
       const userID = createUser(req.body.email, req.body.password);
       // res.cookie('user_id', userID);
@@ -66,7 +70,11 @@ usersRouter
   // Login page
 
   .get('/login', (req, res) => {
-    res.render('login');
+    if (!users[req.session.user_id]) {
+      res.render('login');
+    } else {
+      res.redirect('/urls');
+    }
   })
 
   // Login user
@@ -74,12 +82,10 @@ usersRouter
   .post('/login', (req, res) => {
     const registeredUser = getUserByEmail(req.body.email);
     if (!registeredUser) {
-      res.sendStatus(403);
-    // } else if (req.body.password !== users[registeredUser].password) {
+      res.render('loginerror');
     } else if (!bcrypt.compareSync(req.body.password, users[registeredUser].password)) {
-      res.sendStatus(403);
+      res.render('loginerror');
     } else {
-      // res.cookie('user_id', registeredUser);
       req.session.user_id = registeredUser;
       res.redirect(303, '/');
     }
