@@ -94,11 +94,11 @@ urlsRouter
 
   .get("/:id", (req, res) => {
     if (!users[req.session.user_id]) {
-      res.render('denied');
+      res.status(401).render('denied');
     } else if (!urlDatabase[req.params.id]) {
-      res.render('notfound');
+      res.status(404).render('notfound');
     } else if (urlDatabase[req.params.id].userID !== req.session.user_id){
-      res.render('denied');
+      res.status(401).render('denied');
     } else {
       const templateVars = {shortURL: req.params.id,
                           urls: urlDatabase[req.params.id].longURL,
@@ -112,7 +112,7 @@ urlsRouter
 
   .post("/:id/update", (req, res) => {
     if (!users[req.session.user_id]) {
-      render('denied');
+      res.status(401).render('denied');
     } else {
       updateUrl(req.params.id, req.body.shortURL, req.session.user_id);
       res.redirect(303, '/urls');
@@ -123,9 +123,9 @@ urlsRouter
 
   .post("/:id/delete", (req, res) => {
     if (!users[req.session.user_id]) {
-      render('denied');
+      res.status(401).render('denied');
     } else if (urlDatabase[req.params.id].userID !== req.session.user_id) {
-      res.render('denied');
+      res.status(401).render('denied');
     } else {
       deleteUrl(req.params.id);
       res.redirect(303, '/urls');

@@ -56,9 +56,9 @@ usersRouter
 
   .post('/register', (req, res) => {
     if (!req.body.email || !req.body.password) {
-      res.render('registerempty');
+      res.status(400).render('registerempty');
     } else if (getUserByEmail(req.body.email)) {
-      res.render('registertaken');
+      res.status(403).render('registertaken');
     } else {
       const userID = createUser(req.body.email, req.body.password);
       req.session.user_id = userID;
@@ -81,9 +81,9 @@ usersRouter
   .post('/login', (req, res) => {
     const registeredUser = getUserByEmail(req.body.email);
     if (!registeredUser) {
-      res.render('loginerror');
+      res.status(401).render('loginerror');
     } else if (!bcrypt.compareSync(req.body.password, users[registeredUser].password)) {
-      res.render('loginerror');
+      res.status(401).render('loginerror');
     } else {
       req.session.user_id = registeredUser;
       res.redirect(303, '/');

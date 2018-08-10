@@ -71,7 +71,7 @@ app.get("/u/:shortURL", (req, res) => {
     let longURL = urlDatabase[req.params.shortURL].longURL;
     res.redirect(longURL)
   } else {
-    res.render('notfound');
+    res.status(404).render('notfound');
   }
 });
 
