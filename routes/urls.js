@@ -1,6 +1,11 @@
+// Reauire and instantiate Express
+
 const express = require('express');
 const urlsRouter = new express.Router();
 
+// Require vaild-url module
+
+const validUrl = require('valid-url');
 
 // Require generateRandomString function
 
@@ -68,7 +73,9 @@ urlsRouter
 
   .post("/", (req, res) => {
     if (!users[req.session.user_id]) {
-      render('denied');
+      res.status(401).render('denied');
+    } else if (!validUrl.isUri(req.body.longURL)){
+      res.status(403).render('invalidurl');
     } else {
       const newEntry = addUrl(req.body.longURL, req.session.user_id);
       res.redirect(303, `urls/${newEntry}`);
