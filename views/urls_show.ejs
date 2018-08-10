@@ -8,7 +8,7 @@
 <body>
   <div class="container">
     <% include ./partials/_header %>
-    <form method="post" action="/urls/<%= shortURL%>/update">
+    <form method="post" action="/urls/<%= shortURL%>/update?_method=PUT">
       <p>
         <input type="text" name="shortURL" value="<%= urls %>"> -> <a href="/u/<%= shortURL%>">/u/<%= shortURL %></a>
         <input type="submit" value="Update">

@@ -13,7 +13,7 @@
         <ul>
           <% for(let url in urls) { %>
             <li>
-              <form method="POST" action="/urls/<%= urls[url].short %>/delete">Long URL: <%= urls[url].longURL %> | Short URL: <a href="/u/<%= urls[url].short %>">/u/<%= urls[url].short %></a>
+              <form method="POST" action="/urls/<%= urls[url].short %>/delete?_method=DELETE">Long URL: <%= urls[url].longURL %> | Short URL: <a href="/u/<%= urls[url].short %>">/u/<%= urls[url].short %></a>
                 <a href="/urls/<%= urls[url].short %>">Edit</a>
                 <input type="submit" value="delete">
               </form>

@@ -1,7 +1,11 @@
-// Reauire and instantiate Express
+// Require and instantiate Express
 
 const express = require('express');
 const urlsRouter = new express.Router();
+
+// Require and use method-override
+const methodOverride = require('method-override');
+urlsRouter.use(methodOverride('_method'));
 
 // Require vaild-url module
 
@@ -117,7 +121,7 @@ urlsRouter
 
   // Update URL
 
-  .post("/:id/update", (req, res) => {
+  .put("/:id/update", (req, res) => {
     if (!users[req.session.user_id]) {
       res.status(401).render('denied');
     } else {
@@ -128,7 +132,7 @@ urlsRouter
 
   // Delete URL
 
-  .post("/:id/delete", (req, res) => {
+  .delete("/:id/delete", (req, res) => {
     if (!users[req.session.user_id]) {
       res.status(401).render('denied');
     } else if (urlDatabase[req.params.id].userID !== req.session.user_id) {
