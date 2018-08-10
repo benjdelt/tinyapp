@@ -3,25 +3,28 @@
 <head>
   <meta charset="utf-8">
   <title>TinyApp</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
-  <% include ./partials/_header %>
-  <% if(user_id) { %>
-    <% if (Object.keys(urls).length > 0) {%>
-      <ul>
-        <% for(let url in urls) { %>
-          <li>
-            <form method="POST" action="/urls/<%= urls[url].short %>/delete"><%= urls[url].longURL %> -> <%= urls[url].short %>
-              <a href="/urls/<%= urls[url].short %>">Edit</a>
-              <input type="submit" value="delete">
-            </form>
-          </li>
-        <%}%>
-      </ul>
-    <% } else { %>
-          <p>No url to show yet!</p>
+  <div class="container">
+    <% include ./partials/_header %>
+    <% if(user_id) { %>
+      <% if (Object.keys(urls).length > 0) {%>
+        <ul>
+          <% for(let url in urls) { %>
+            <li>
+              <form method="POST" action="/urls/<%= urls[url].short %>/delete">Long URL: <%= urls[url].longURL %> | Short URL: <a href="/u/<%= urls[url].short %>">/u/<%= urls[url].short %></a>
+                <a href="/urls/<%= urls[url].short %>">Edit</a>
+                <input type="submit" value="delete">
+              </form>
+            </li>
+          <%}%>
+        </ul>
+      <% } else { %>
+            <p>No url to show yet!</p>
+      <%}%>
+      <a href="/urls/new">Shorten URL</a>
     <%}%>
-    <a href="/urls/new">Shorten URL</a>
-  <%}%>
+  </div>
 </body>
 </html>

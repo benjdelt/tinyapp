@@ -1,13 +1,15 @@
 <!-- views/partials/_ header.ejs -->
-<header>
-  <h1>Tiny App</h1>
-</header>
-<% if(user_id) { %>
-  <h2>Hey, <%= user_id.email %></h2>
-  <form method="POST" action="/logout">
-    <input type="submit" value="Logout">
-  </form>
-<% } else { %>
-    <a href="/register">Register</a>
-    <a href="/login">Login</a>
-<% } %>
+<div class="container">
+  <header>
+    <h1>Tiny App</h1>
+  </header>
+  <% if(user_id) { %>
+    <h2>Hey, <%= user_id.email %></h2>
+    <form method="POST" action="/logout">
+      <input type="submit" value="Logout">
+    </form>
+  <% } else { %>
+      <a href="/register">Register</a>
+      <a href="/login">Login</a>
+  <% } %>
+</div>

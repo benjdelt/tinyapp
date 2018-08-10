@@ -3,14 +3,17 @@
 <head>
   <meta charset="utf-8">
   <title>URL Show</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
-  <% include ./partials/_header %>
-  <form method="post" action="/urls/<%= shortURL%>/update">
-    <p>
-      <input type="text" name="shortURL" value="<%=urls %>"> -> <%= shortURL %>
-      <input type="submit" value="Update">
-    </p>
-  </form>
+  <div class="container">
+    <% include ./partials/_header %>
+    <form method="post" action="/urls/<%= shortURL%>/update">
+      <p>
+        <input type="text" name="shortURL" value="<%= urls %>"> -> <a href="/u/<%= shortURL%>">/u/<%= shortURL %></a>
+        <input type="submit" value="Update">
+      </p>
+    </form>
+  </div>
 </body>
 </html>
