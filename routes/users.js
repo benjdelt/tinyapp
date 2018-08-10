@@ -15,16 +15,16 @@ const bcrypt = require('bcrypt');
 
 const users = require('../db/users-db');
 
-
+// Databse functions
 
 function createUser(email, password) {
   const randomID = generateRandomString();
   const hashedPassword = bcrypt.hashSync(password, 10);
   users[randomID] = {
-                    id: randomID,
-                    email: email,
-                    password: hashedPassword
-                   };
+    id: randomID,
+    email: email,
+    password: hashedPassword
+  };
   return randomID;
 }
 
@@ -61,7 +61,6 @@ usersRouter
       res.render('registertaken'); // Why not use 403?
     } else {
       const userID = createUser(req.body.email, req.body.password);
-      // res.cookie('user_id', userID);
       req.session.user_id = userID;
       res.redirect(303, '/urls');
     }
@@ -95,7 +94,6 @@ usersRouter
   // Logout user
 
   .post("/logout", (req, res) => {
-    // res.clearCookie('user_id');
     req.session = null;
     res.redirect(303, '/urls');
   });

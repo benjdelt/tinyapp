@@ -30,19 +30,19 @@ function urlsForUser(id) {
 function addUrl(fullUrl, userID) {
   const newEntry = generateRandomString();
   urlDatabase[newEntry] = {
-                          short: newEntry,
-                          longURL: fullUrl,
-                          userID: userID
-                          };
+    short: newEntry,
+    longURL: fullUrl,
+    userID: userID
+  };
   return newEntry;
 }
 
 function updateUrl(id, fullUrl, userID) {
   urlDatabase[id] = {
-                    short: id,
-                    longURL: fullUrl,
-                    userID: userID
-                    };
+    short: id,
+    longURL: fullUrl,
+    userID: userID
+  };
 }
 
 function deleteUrl(id) {
@@ -79,14 +79,10 @@ urlsRouter
 
   .get("/", (req, res) => {
     let templateVars = {
-                        urls: urlsForUser(req.session.user_id),
-                        user_id: users[req.session.user_id]
-                       };
-    // if (!users[req.session.user_id]) {
-    //     res.redirect('/login');
-    // } else {
+      urls: urlsForUser(req.session.user_id),
+      user_id: users[req.session.user_id]
+      };
       res.render("urls_index", templateVars);
-    // }
   })
 
 
