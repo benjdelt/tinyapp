@@ -15,7 +15,7 @@ const bcrypt = require('bcrypt');
 
 const users = require('../db/users-db');
 
-// Databse functions
+// Database functions
 
 function createUser(email, password) {
   const randomID = generateRandomString();
@@ -29,7 +29,7 @@ function createUser(email, password) {
 }
 
 function getUserByEmail(email) {
-  for (user in users) {
+  for (let user in users) {
     if (users[user].email === email) {
       return users[user].id;
     }
@@ -56,9 +56,9 @@ usersRouter
 
   .post('/register', (req, res) => {
     if (!req.body.email || !req.body.password) {
-      res.render('registerempty'); // Why not use 403?
+      res.render('registerempty');
     } else if (getUserByEmail(req.body.email)) {
-      res.render('registertaken'); // Why not use 403?
+      res.render('registertaken');
     } else {
       const userID = createUser(req.body.email, req.body.password);
       req.session.user_id = userID;

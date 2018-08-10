@@ -17,7 +17,7 @@ const urlDatabase = require('../db/urls-db');
 
 function urlsForUser(id) {
   const result = {};
-  for (url in urlDatabase) {
+  for (let url in urlDatabase) {
     if (urlDatabase[url].userID === id) {
       result[urlDatabase[url].short] = urlDatabase[url];
     }
@@ -59,7 +59,7 @@ urlsRouter
     if (!users[req.session.user_id]) {
       res.redirect('/login');
     } else {
-      let templateVars = {user_id: users[req.session.user_id]};
+      const templateVars = {user_id: users[req.session.user_id]};
       res.render("urls_new", templateVars);
     }
   })
@@ -78,7 +78,7 @@ urlsRouter
   // Render all urls for a user
 
   .get("/", (req, res) => {
-    let templateVars = {
+    const templateVars = {
       urls: urlsForUser(req.session.user_id),
       user_id: users[req.session.user_id]
       };
@@ -100,7 +100,7 @@ urlsRouter
     } else if (urlDatabase[req.params.id].userID !== req.session.user_id){
       res.render('denied');
     } else {
-      let templateVars = {shortURL: req.params.id,
+      const templateVars = {shortURL: req.params.id,
                           urls: urlDatabase[req.params.id].longURL,
                           user_id: users[req.session.user_id]
                           };

@@ -27,7 +27,7 @@ app.use(cookieSession({
 
 const PORT = 8080;
 
-// Set view engin to EJS
+// Set view engine to EJS
 
 app.set('view engine', 'ejs');
 
